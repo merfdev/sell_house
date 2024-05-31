@@ -1,7 +1,15 @@
 import SigninPage from "@/components/template/SigninPage";
-import React from "react";
+import { getServerSession } from "next-auth";
 
-function SignIn() {
+import { redirect } from "next/navigation";
+import React from "react";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+
+async function SignIn() {
+  const session = await getServerSession(authOptions);
+
+  if (session) redirect("/");
+
   return <SigninPage />;
 }
 
