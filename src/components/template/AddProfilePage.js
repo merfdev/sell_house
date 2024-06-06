@@ -4,9 +4,15 @@ import { useState } from "react";
 import TextInput from "../module/TextInput";
 import styles from "./AddProfilePage.module.css";
 import RadioList from "../module/RadioList";
+import TextList from "../module/TextList";
+import CustomDatePicker from "../module/CustomDatePicker";
+
+import toast, { Toaster } from "react-hot-toast";
+
+import Loader from "../module/Loader";
 
 function AddProfilePage() {
-  const [profileDate, setProfileDate] = useState({
+  const [profileData, setProfileData] = useState({
     title: "",
     description: "",
     location: "",
@@ -18,8 +24,23 @@ function AddProfilePage() {
     rules: [],
     amenities: [],
   });
-  const submitHandler = () => {
-    console.log(profileDate);
+  const [loading, setLoading] = useState(false);
+  const submitHandler = async () => {
+    setLoading(true);
+    const res = await fetch("/api/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profileData),
+    });
+    const data = await res.json();
+    setLoading(false);
+    if (data.error) {
+      toast.error(data.error);
+    } else {
+      toast.success(data.message);
+    }
   };
   return (
     <div className={styles.container}>
@@ -27,44 +48,65 @@ function AddProfilePage() {
       <TextInput
         title="عنوان آگهی"
         name="title"
-        profileData={profileDate}
-        setProfileData={setProfileDate}
+        profileData={profileData}
+        setProfileData={setProfileData}
       />
       <TextInput
         title="توضیحات"
         name="description"
-        profileData={profileDate}
-        setProfileData={setProfileDate}
+        profileData={profileData}
+        setProfileData={setProfileData}
         textarea={true}
       />
       <TextInput
         title="آدرس"
         name="location"
-        profileData={profileDate}
-        setProfileData={setProfileDate}
+        profileData={profileData}
+        setProfileData={setProfileData}
       />
       <TextInput
         title="شماره تماس"
         name="phone"
-        profileData={profileDate}
-        setProfileData={setProfileDate}
+        profileData={profileData}
+        setProfileData={setProfileData}
       />
       <TextInput
         title="قیمت"
         name="price"
-        profileData={profileDate}
-        setProfileData={setProfileDate}
+        profileData={profileData}
+        setProfileData={setProfileData}
       />
       <TextInput
         title="بنگاه"
         name="realState"
-        profileData={profileDate}
-        setProfileData={setProfileDate}
+        profileData={profileData}
+        setProfileData={setProfileData}
       />
-      <RadioList profileDate={profileDate} setProfileData={setProfileDate} />
-      <button className={styles.submit} onClick={submitHandler}>
-        ثبت آگهی
-      </button>
+      <RadioList profileDate={profileData} setProfileData={setProfileData} />
+      <TextList
+        profileData={profileData}
+        setProfileData={setProfileData}
+        type="amenities"
+        title="امکانات رفاهی"
+      />
+      <TextList
+        profileData={profileData}
+        setProfileData={setProfileData}
+        type="rules"
+        title="قوانین "
+      />
+      <CustomDatePicker
+        profileData={profileData}
+        setProfileData={setProfileData}
+      />
+      <Toaster />
+      {loading ? (
+        <Loader />
+      ) : (
+        <button className={styles.submit} onClick={submitHandler}>
+          ثبت آگهی
+        </button>
+      )}
     </div>
   );
 }

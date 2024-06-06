@@ -4,7 +4,7 @@ import styles from "./SignUpPage.module.css";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { ThreeDots } from "react-loader-spinner";
+import Loader from "../module/Loader";
 
 function SignUpPage() {
   const router = useRouter();
@@ -59,13 +59,7 @@ function SignUpPage() {
           onChange={(e) => setRePassword(e.target.value)}
         />
         {loading ? (
-          <ThreeDots
-            visible={true}
-            height={45}
-            color="#304ffe"
-            ariaLabel="three-dots-loading"
-            wrapperStyle={{ margin: "auto" }}
-          />
+          <Loader />
         ) : (
           <button className={styles.btn} onClick={signupHandler}>
             ثبت نام
