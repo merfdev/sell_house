@@ -122,7 +122,7 @@ export async function PATCH(req) {
     }
 
     const profile = await Profile.findOne({ _id });
-    if (!user._id.isEqual(profile.userId)) {
+    if (!user._id.equals(profile.userId)) {
       return NextResponse.json(
         { error: "شما اجازه دسترسی به این آگهی را ندارید" },
         { status: 403 }
@@ -148,4 +148,3 @@ export async function PATCH(req) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
