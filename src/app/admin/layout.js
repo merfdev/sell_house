@@ -1,17 +1,16 @@
 import DashboardSidebar from "@/components/layout/DashboardSidebar";
 import { getServerSession } from "next-auth";
+import React from "react";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import User from "@/models/Users";
 import { redirect } from "next/navigation";
 import connectDB from "@/utils/connectDB";
-import User from "@/models/Users";
 
-async function DashboardLayout({ children }) {
+async function AdminLayout({ children }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/signin");
   await connectDB();
   const user = await User.findOne({ email: session.user.email });
-  console.log(user);
-  if (!user) return <h3>مشکل برات پیش آمده</h3>;
 
   return (
     <DashboardSidebar role={user.role} email={user.email}>
@@ -20,4 +19,4 @@ async function DashboardLayout({ children }) {
   );
 }
 
-export default DashboardLayout;
+export default AdminLayout;
