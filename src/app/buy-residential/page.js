@@ -4,8 +4,10 @@ import connectDB from "@/utils/connectDB";
 
 async function BuyResidentials({ searchParams }) {
   await connectDB();
-  const profile = await Profile.find({ category: searchParams.category });
-  console.log(profile);
+  let fData = await Profile.find({});
+  if (searchParams.category) {
+    fData = await Profile.find({ category: searchParams.category });
+  }
 
   // const data = await res.json();
   // if (data.error) return <h3>مشکلی پیش آمده</h3>;
@@ -15,7 +17,7 @@ async function BuyResidentials({ searchParams }) {
   //   fData = fData.filter((i) => i.category === searchParams.category);
   // }
 
-  return <BuyResidentialsPage fdata={profile} />;
+  return <BuyResidentialsPage fdata={fData} />;
 }
 
 export default BuyResidentials;
