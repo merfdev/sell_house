@@ -6,6 +6,10 @@ import User from "@/models/Users";
 import { redirect } from "next/navigation";
 import connectDB from "@/utils/connectDB";
 
+export const metadata = {
+  title: "داشبورد ادمین | پروژه من",
+};
+
 async function AdminLayout({ children }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/signin");
